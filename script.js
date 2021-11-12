@@ -1,4 +1,50 @@
-var tasks = {};
+var today = moment();
+$("#currentDay").text(today.format("dddd, MMMM Do"));
+
+var tasks = {
+    "9": [],
+    "10": [],
+    "11": [],
+    "12": [],
+    "13": [],
+    "14": [],
+    "15": [],
+    "16": [],
+    "17": []
+};
+
+var createTask = function(taskText, hourDiv) {
+
+    var taskDiv = hourDiv.find(".task");
+    var taskP = $("<p>")
+        .addClass("description")
+        .text(taskText)
+    taskDiv.html(taskP);
+}
+
+// tasks
+$(".task").click(function() {
+
+    // save the other tasks if they've already been clicked
+    $("textarea").each(function() {
+        replaceTextarea($(this));
+    })
+
+    // convert to a textarea element if the time hasn't passed
+    var time = $(this).closest(".task-info").attr("id");
+    if (parseInt(time) >= moment().hour()) {
+
+        // create a textInput element that includes the current task
+        var text = $(this).text();
+        var textInput = $("<textarea>")
+            .addClass("form-control")
+            .val(text);
+
+        // add the textInput element to the parent div
+        $(this).html(textInput);
+        textInput.trigger("focus");
+    }
+});
 
 var createTask = function(taskText, taskDate, taskList) {
   // create elements that make up a task item
